@@ -40,7 +40,7 @@ if (courses.length === 0) {
             id: 1,
             title: "Сценарный Прорыв",
             master: "Квентин Тарантино",
-            poster: "https://images.unsplash.com/photo-1455390582262-044cdead277a?w=600",
+            poster: "/images/scenariy.jpg",
             category: "Сценарий",
             price: 15000,
             description: "Как написать диалоги, от которых мурашки по коже."
@@ -49,7 +49,7 @@ if (courses.length === 0) {
             id: 2,
             title: "Режиссура Кино",
             master: "Кристофер Нолан",
-            poster: "https://images.unsplash.com/photo-1492691527719-9d1e07e534b4?w=600",
+            poster: "/images/rezhissura.jpg",
             category: "Режиссура",
             price: 25000,
             description: "Визуальное повествование и работа с актёрами."
@@ -58,7 +58,7 @@ if (courses.length === 0) {
             id: 3,
             title: "Магия Монтажа",
             master: "Тельма Скунмейкер",
-            poster: "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?w=600",
+            poster: "/images/montazh.jpg",
             category: "Монтаж",
             price: 10000,
             description: "От черновой сборки до цветокоррекции."

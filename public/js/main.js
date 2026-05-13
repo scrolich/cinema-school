@@ -3,6 +3,99 @@
 // ============================================
 
 // ============================================
+// ПРОВЕРКА АВТОРИЗАЦИИ ПРИ ЗАГРУЗКЕ
+// ============================================
+function checkAuth() {
+    const user = JSON.parse(localStorage.getItem('user'));
+    const authBtn = document.getElementById('openAuthBtn');
+    
+    if (user) {
+        // Пользователь вошёл — меняем кнопку
+        authBtn.textContent = `👤 ${user.name}`;
+        authBtn.classList.add('logged-in');
+        
+        // Создаём выпадающее меню
+        authBtn.addEventListener('click', toggleUserMenu);
+    } else {
+        // Не вошёл — кнопка "Войти"
+        authBtn.textContent = 'Войти';
+        authBtn.classList.remove('logged-in');
+        authBtn.addEventListener('click', openModal);
+    }
+}
+
+// ============================================
+// МЕНЮ ПОЛЬЗОВАТЕЛЯ (личный кабинет)
+// ============================================
+function createUserMenu() {
+    // Удаляем старое меню если есть
+    const oldMenu = document.getElementById('userDropdown');
+    if (oldMenu) oldMenu.remove();
+    
+    const menu = document.createElement('div');
+    menu.id = 'userDropdown';
+    menu.className = 'user-dropdown';
+    menu.innerHTML = `
+        <a href="#" class="dropdown-item">📚 Мои курсы</a>
+        <a href="#" class="dropdown-item">⚙️ Настройки</a>
+        <hr>
+        <a href="#" class="dropdown-item logout">🚪 Выйти</a>
+    `;
+    
+    document.body.appendChild(menu);
+    
+    // Выход
+    menu.querySelector('.logout').addEventListener('click', (e) => {
+        e.preventDefault();
+        logout();
+    });
+    
+    return menu;
+}
+
+function toggleUserMenu(e) {
+    e.stopPropagation();
+    let menu = document.getElementById('userDropdown');
+    
+    if (!menu) {
+        menu = createUserMenu();
+    }
+    
+    // Позиционируем меню под кнопкой
+    const btn = document.getElementById('openAuthBtn');
+    const rect = btn.getBoundingClientRect();
+    menu.style.top = rect.bottom + 5 + 'px';
+    menu.style.right = (window.innerWidth - rect.right) + 'px';
+    
+    menu.classList.toggle('active');
+}
+
+function logout() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    
+    const menu = document.getElementById('userDropdown');
+    if (menu) menu.remove();
+    
+    const authBtn = document.getElementById('openAuthBtn');
+    authBtn.textContent = 'Войти';
+    authBtn.classList.remove('logged-in');
+    
+    // Убираем старые обработчики
+    const newBtn = authBtn.cloneNode(true);
+    authBtn.parentNode.replaceChild(newBtn, authBtn);
+    
+    // Вешаем обработчик открытия модалки
+    document.getElementById('openAuthBtn').addEventListener('click', openModal);
+}
+
+// Закрытие меню при клике вне
+document.addEventListener('click', () => {
+    const menu = document.getElementById('userDropdown');
+    if (menu) menu.classList.remove('active');
+});
+
+// ============================================
 // ЗАГРУЗКА КУРСОВ
 // ============================================
 async function loadCourses() {
@@ -48,17 +141,15 @@ function createCourseCard(course) {
 // ============================================
 // МОДАЛЬНОЕ ОКНО ВХОДА / РЕГИСТРАЦИИ
 // ============================================
+function openModal() {
+    document.getElementById('authModal').classList.add('active');
+}
+
 function initAuthModal() {
     const modal = document.getElementById('authModal');
-    const openBtn = document.getElementById('openAuthBtn');
     const closeBtn = document.getElementById('closeModal');
     const tabs = document.querySelectorAll('.modal-tab');
     const forms = document.querySelectorAll('.auth-form');
-
-    // Открыть модалку
-    openBtn.addEventListener('click', () => {
-        modal.classList.add('active');
-    });
 
     // Закрыть модалку
     closeBtn.addEventListener('click', () => {
@@ -76,10 +167,8 @@ function initAuthModal() {
     tabs.forEach(tab => {
         tab.addEventListener('click', () => {
             const tabName = tab.dataset.tab;
-            
             tabs.forEach(t => t.classList.remove('active'));
             tab.classList.add('active');
-            
             forms.forEach(f => f.classList.remove('active'));
             document.getElementById(tabName + 'Form').classList.add('active');
         });
@@ -106,11 +195,12 @@ function initAuthModal() {
                 message.textContent = `Добро пожаловать, ${data.user.name}!`;
                 message.className = 'form-message success';
                 
-                // Сохраняем токен
                 localStorage.setItem('token', data.token);
                 localStorage.setItem('user', JSON.stringify(data.user));
                 
-                // Закрываем через 1.5 секунды
+                // Обновляем шапку
+                updateHeaderAfterLogin(data.user);
+                
                 setTimeout(() => modal.classList.remove('active'), 1500);
             } else {
                 message.textContent = data.message || 'Ошибка входа';
@@ -154,6 +244,9 @@ function initAuthModal() {
                 localStorage.setItem('token', data.token);
                 localStorage.setItem('user', JSON.stringify(data.user));
                 
+                // Обновляем шапку
+                updateHeaderAfterLogin(data.user);
+                
                 setTimeout(() => modal.classList.remove('active'), 1500);
             } else {
                 message.textContent = data.message || 'Ошибка регистрации';
@@ -164,6 +257,20 @@ function initAuthModal() {
             message.className = 'form-message error';
         }
     });
+}
+
+// Обновление шапки после входа
+function updateHeaderAfterLogin(user) {
+    const authBtn = document.getElementById('openAuthBtn');
+    
+    // Убираем старые обработчики
+    const newBtn = authBtn.cloneNode(true);
+    authBtn.parentNode.replaceChild(newBtn, authBtn);
+    
+    const freshBtn = document.getElementById('openAuthBtn');
+    freshBtn.textContent = `👤 ${user.name}`;
+    freshBtn.classList.add('logged-in');
+    freshBtn.addEventListener('click', toggleUserMenu);
 }
 
 // ============================================
@@ -188,6 +295,7 @@ function initSmoothScroll() {
 // ============================================
 document.addEventListener('DOMContentLoaded', () => {
     console.log('🎬 Академия КИНО — страница загружена');
+    checkAuth();
     loadCourses();
     initAuthModal();
     initSmoothScroll();

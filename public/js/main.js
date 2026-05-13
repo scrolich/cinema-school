@@ -125,7 +125,7 @@ async function loadCourses() {
 
 function createCourseCard(course) {
     return `
-        <article class="course-card">
+        <article class="course-card" onclick="location.href='/course.html?id=${course.id}'">
             <img src="${course.poster}" alt="${course.title}" loading="lazy"
                  onerror="this.src='https://placehold.co/400x230/e8d5c4/d4a574?text=${encodeURIComponent(course.category)}'">
             <div class="course-info">

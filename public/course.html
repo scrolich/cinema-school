@@ -3,59 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Академия КИНО | Обучение с нуля</title>
+    <title>Курс | Академия КИНО</title>
     <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/course.css">
 </head>
 <body>
-    <!-- ШАПКА С МЕНЮ -->
+    <!-- ШАПКА -->
     <header class="header" id="header">
         <div class="header-container">
-            <a href="#" class="logo">🎬 Академия КИНО</a>
+            <a href="/" class="logo">🎬 Академия КИНО</a>
             <nav class="nav">
-                <a href="#courses" class="nav-link">Курсы</a>
-                <a href="#about" class="nav-link">О школе</a>
-                <a href="#faq" class="nav-link">FAQ</a>
-                <a href="#reviews" class="nav-link">Отзывы</a>
-                <a href="#contacts" class="nav-link">Контакты</a>
+                <a href="/#courses" class="nav-link">Курсы</a>
+                <a href="/#about" class="nav-link">О школе</a>
+                <a href="/#faq" class="nav-link">FAQ</a>
+                <a href="/#reviews" class="nav-link">Отзывы</a>
             </nav>
             <button class="btn btn-outline" id="openAuthBtn">Войти</button>
         </div>
     </header>
 
-    <!-- ГЛАВНЫЙ ЭКРАН -->
-    <section class="hero">
-        <div class="hero-content">
-            <h1 class="hero-title">СТАНЬ ТЕМ, КТО СНИМАЕТ</h1>
-            <p class="hero-subtitle">Режиссура, сценарное мастерство, монтаж. Учись у тех, чьи фильмы ты смотришь.</p>
-            <a href="#courses" class="btn btn-primary">СМОТРЕТЬ ПРОГРАММУ</a>
-        </div>
-    </section>
-
-    <!-- КАТАЛОГ КУРСОВ -->
-    <section class="container" id="courses">
-        <h2 class="section-title">🎬 КИНО-ФАКУЛЬТЕТЫ</h2>
-        <div class="course-grid" id="courses-container">
-            <p class="loading-text">Загрузка курсов...</p>
-        </div>
-    </section>
+    <!-- СТРАНИЦА КУРСА -->
+    <main class="course-page" id="coursePage">
+        <div class="loading-text">🎥 Загружаем курс...</div>
+    </main>
 
     <!-- ПОДВАЛ -->
     <footer class="footer">
         <p>&copy; 2024 Академия КИНО. Все права защищены.</p>
     </footer>
 
-    <!-- МОДАЛЬНОЕ ОКНО ВХОДА / РЕГИСТРАЦИИ -->
+    <!-- МОДАЛКА ВХОДА/РЕГИСТРАЦИИ (как на главной) -->
     <div class="modal-overlay" id="authModal">
         <div class="modal">
             <button class="modal-close" id="closeModal">&times;</button>
-            
-            <!-- Переключатель вкладок -->
             <div class="modal-tabs">
                 <button class="modal-tab active" data-tab="login">Вход</button>
                 <button class="modal-tab" data-tab="register">Регистрация</button>
             </div>
-
-            <!-- Форма ВХОДА -->
             <form class="auth-form active" id="loginForm">
                 <h3 class="form-title">С возвращением!</h3>
                 <input type="email" placeholder="Email" required class="form-input">
@@ -63,8 +47,6 @@
                 <button type="submit" class="btn btn-primary form-btn">Войти</button>
                 <p class="form-message" id="loginMessage"></p>
             </form>
-
-            <!-- Форма РЕГИСТРАЦИИ -->
             <form class="auth-form" id="registerForm">
                 <h3 class="form-title">Начните обучение!</h3>
                 <input type="text" placeholder="Имя" required class="form-input">
@@ -76,8 +58,9 @@
         </div>
     </div>
 
-    <script src="/js/main.js"></script>
+    <!-- МЕНЮ ПОЛЬЗОВАТЕЛЯ (создаётся динамически) -->
+
     <script src="/js/auth.js"></script>
-    <script src="/js/main.js"></script>
+    <script src="/js/course.js"></script>
 </body>
 </html>

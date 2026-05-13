@@ -535,3 +535,51 @@ body {
 .faq-answer strong {
     color: #8b7355;
 }
+
+/* ============================================
+   КОНТАКТЫ
+   ============================================ */
+.contacts-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 25px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.contact-item {
+    text-align: center;
+    padding: 30px 15px;
+    background: #fff;
+    border-radius: 16px;
+    border: 1px solid #e8d5c4;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.contact-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(180, 150, 120, 0.15);
+}
+
+.contact-icon {
+    font-size: 2rem;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.contact-item h3 {
+    color: #8b7355;
+    font-size: 1rem;
+    margin-bottom: 8px;
+}
+
+.contact-item p {
+    color: #6b5c4f;
+    font-size: 0.95rem;
+}
+
+@media (max-width: 768px) {
+    .contacts-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}

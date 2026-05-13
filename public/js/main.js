@@ -259,20 +259,6 @@ function initAuthModal() {
     });
 }
 
-// Обновление шапки после входа
-function updateHeaderAfterLogin(user) {
-    const authBtn = document.getElementById('openAuthBtn');
-    
-    // Убираем старые обработчики
-    const newBtn = authBtn.cloneNode(true);
-    authBtn.parentNode.replaceChild(newBtn, authBtn);
-    
-    const freshBtn = document.getElementById('openAuthBtn');
-    freshBtn.textContent = `👤 ${user.name}`;
-    freshBtn.classList.add('logged-in');
-    freshBtn.addEventListener('click', toggleUserMenu);
-}
-
 // ============================================
 // ПЛАВНАЯ ПРОКРУТКА
 // ============================================
@@ -299,4 +285,19 @@ document.addEventListener('DOMContentLoaded', () => {
     loadCourses();
     initAuthModal();
     initSmoothScroll();
+        // FAQ аккордеон
+    document.querySelectorAll('.faq-question').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const item = btn.parentElement;
+            const isActive = item.classList.contains('active');
+            
+            // Закрыть все
+            document.querySelectorAll('.faq-item').forEach(el => el.classList.remove('active'));
+            
+            // Открыть текущий (если был не открыт)
+            if (!isActive) {
+                item.classList.add('active');
+            }
+        });
+    });
 });

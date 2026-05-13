@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вход в админ-панель | Академия КИНО</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body class="admin-login-body">
+    <div class="admin-login-box">
+        <h1>🎬 Админ-панель</h1>
+        <p class="admin-subtitle">Введите пароль для доступа</p>
+        
+        <form id="adminLoginForm">
+            <input type="password" id="adminPassword" placeholder="Пароль" required class="form-input">
+            <button type="submit" class="btn btn-primary form-btn">Войти</button>
+            <p class="form-message" id="loginMessage"></p>
+        </form>
+        
+        <a href="/" class="back-link">← На сайт</a>
+    </div>
+
+    <script>
+        document.getElementById('adminLoginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const password = document.getElementById('adminPassword').value;
+            const message = document.getElementById('loginMessage');
+            
+            try {
+                const response = await fetch('/api/admin/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ password })
+                });
+                
+                const data = await response.json();
+                
+                if (response.ok) {
+                    localStorage.setItem('adminToken', data.token);
+                    message.textContent = '✅ Доступ разрешён!';
+                    message.className = 'form-message success';
+                    
+                    setTimeout(() => {
+                        window.location.href = '/admin/dashboard.html';
+                    }, 800);
+                } else {
+                    message.textContent = '❌ ' + (data.message || 'Неверный пароль');
+                    message.className = 'form-message error';
+                }
+            } catch (error) {
+                message.textContent = '❌ Ошибка соединения';
+                message.className = 'form-message error';
+            }
+        });
+    </script>
+</body>
+</html>

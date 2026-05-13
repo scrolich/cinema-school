@@ -138,6 +138,105 @@ app.get('/api/courses', (req, res) => {
 });
 
 // ============================================
+// API: АДМИН-ПАНЕЛЬ (только для админа)
+// ============================================
+
+// Middleware проверки админа
+function adminAuth(req, res, next) {
+    const token = req.headers.authorization?.split(' ')[1];
+    
+    if (!token) {
+        return res.status(401).json({ message: 'Требуется авторизация' });
+    }
+    
+    try {
+        const decoded = jwt.verify(token, JWT_SECRET);
+        if (decoded.role !== 'admin') {
+            return res.status(403).json({ message: 'Доступ запрещён' });
+        }
+        next();
+    } catch (error) {
+        return res.status(401).json({ message: 'Неверный токен' });
+    }
+}
+
+// Вход в админку
+app.post('/api/admin/login', async (req, res) => {
+    try {
+        const { password } = req.body;
+        const ADMIN_PASSWORD = 'Rafpuf456@11'; // ← ПОМЕНЯЙТЕ НА СВОЙ ПАРОЛЬ
+        
+        if (password !== ADMIN_PASSWORD) {
+            return res.status(401).json({ message: 'Неверный пароль' });
+        }
+        
+        const token = jwt.sign({ role: 'admin' }, JWT_SECRET, { expiresIn: '24h' });
+        res.json({ token, message: 'Добро пожаловать в админ-панель' });
+    } catch (error) {
+        res.status(500).json({ message: 'Ошибка сервера' });
+    }
+});
+
+// Получить все курсы (с полными данными)
+app.get('/api/admin/courses', adminAuth, (req, res) => {
+    res.json(courses);
+});
+
+// Создать новый курс
+app.post('/api/admin/courses', adminAuth, (req, res) => {
+    const { title, master, poster, category, price, description, modules } = req.body;
+    
+    const newCourse = {
+        id: courses.length > 0 ? Math.max(...courses.map(c => c.id)) + 1 : 1,
+        title,
+        master,
+        poster: poster || 'https://placehold.co/400x230/e8d5c4/d4a574?text=Новый+курс',
+        category,
+        price: Number(price),
+        description,
+        modules: modules || []
+    };
+    
+    courses.push(newCourse);
+    writeJSON('courses.json', courses);
+    
+    console.log(`✅ Админ создал курс: ${title}`);
+    res.status(201).json(newCourse);
+});
+
+// Обновить курс
+app.put('/api/admin/courses/:id', adminAuth, (req, res) => {
+    const id = parseInt(req.params.id);
+    const index = courses.findIndex(c => c.id === id);
+    
+    if (index === -1) {
+        return res.status(404).json({ message: 'Курс не найден' });
+    }
+    
+    courses[index] = { ...courses[index], ...req.body, id };
+    writeJSON('courses.json', courses);
+    
+    console.log(`✅ Админ обновил курс: ${courses[index].title}`);
+    res.json(courses[index]);
+});
+
+// Удалить курс
+app.delete('/api/admin/courses/:id', adminAuth, (req, res) => {
+    const id = parseInt(req.params.id);
+    const index = courses.findIndex(c => c.id === id);
+    
+    if (index === -1) {
+        return res.status(404).json({ message: 'Курс не найден' });
+    }
+    
+    const deleted = courses.splice(index, 1)[0];
+    writeJSON('courses.json', courses);
+    
+    console.log(`🗑️ Админ удалил курс: ${deleted.title}`);
+    res.json({ message: 'Курс удалён' });
+});
+
+// ============================================
 // API: Конкретный курс
 // ============================================
 app.get('/api/courses/:id', (req, res) => {

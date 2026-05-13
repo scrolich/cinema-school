@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Редактор курса | Админ-панель</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+    <header class="admin-header">
+        <div class="admin-header-inner">
+            <h2 id="pageTitle">🎬 Новый курс</h2>
+            <div>
+                <a href="/admin/dashboard.html" class="btn btn-outline btn-sm">← К списку</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="admin-container admin-form-container">
+        <form id="courseForm">
+            <input type="hidden" id="courseId">
+            
+            <label class="form-label">Название курса</label>
+            <input type="text" id="title" required class="form-input">
+            
+            <label class="form-label">Категория</label>
+            <select id="category" required class="form-input">
+                <option value="">Выберите...</option>
+                <option value="Сценарий">Сценарий</option>
+                <option value="Режиссура">Режиссура</option>
+                <option value="Монтаж">Монтаж</option>
+                <option value="Актёрское">Актёрское</option>
+            </select>
+            
+            <label class="form-label">Мастер курса</label>
+            <input type="text" id="master" required class="form-input">
+            
+            <label class="form-label">Цена (₽)</label>
+            <input type="number" id="price" required class="form-input">
+            
+            <label class="form-label">Ссылка на постер (URL)</label>
+            <input type="url" id="poster" class="form-input">
+            
+            <label class="form-label">Описание</label>
+            <textarea id="description" rows="4" required class="form-input"></textarea>
+            
+            <button type="submit" class="btn btn-primary form-btn">💾 Сохранить</button>
+            <p class="form-message" id="saveMessage"></p>
+        </form>
+    </main>
+
+    <script>
+        const ADMIN_URL = '/api/admin/courses';
+        const urlParams = new URLSearchParams(window.location.search);
+        const courseId = urlParams.get('id');
+        const isEdit = !!courseId;
+        
+        function getToken() {
+            return localStorage.getItem('adminToken');
+        }
+        
+        // Если редактирование — загружаем курс
+        if (isEdit) {
+            document.getElementById('pageTitle').textContent = '✏️ Редактирование курса';
+            loadCourse(courseId);
+        }
+        
+        async function loadCourse(id) {
+            try {
+                const response = await fetch(ADMIN_URL, {
+                    headers: { 'Authorization': `Bearer ${getToken()}` }
+                });
+                const courses = await response.json();
+                const course = courses.find(c => c.id == id);
+                
+                if (course) {
+                    document.getElementById('courseId').value = course.id;
+                    document.getElementById('title').value = course.title;
+                    document.getElementById('category').value = course.category;
+                    document.getElementById('master').value = course.master;
+                    document.getElementById('price').value = course.price;
+                    document.getElementById('poster').value = course.poster || '';
+                    document.getElementById('description').value = course.description;
+                }
+            } catch (error) {
+                alert('Ошибка загрузки курса');
+            }
+        }
+        
+        // Сохранение
+        document.getElementById('courseForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const data = {
+                title: document.getElementById('title').value,
+                category: document.getElementById('category').value,
+                master: document.getElementById('master').value,
+                price: document.getElementById('price').value,
+                poster: document.getElementById('poster').value,
+                description: document.getElementById('description').value
+            };
+            
+            const message = document.getElementById('saveMessage');
+            const method = isEdit ? 'PUT' : 'POST';
+            const url = isEdit ? `${ADMIN_URL}/${courseId}` : ADMIN_URL;
+            
+            try {
+                const response = await fetch(url, {
+                    method,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${getToken()}`
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                if (response.ok) {
+                    message.textContent = '✅ Сохранено!';
+                    message.className = 'form-message success';
+                    
+                    if (!isEdit) {
+                        setTimeout(() => window.location.href = '/admin/dashboard.html', 1000);
+                    }
+                } else {
+                    const err = await response.json();
+                    message.textContent = '❌ ' + (err.message || 'Ошибка');
+                    message.className = 'form-message error';
+                }
+            } catch (error) {
+                message.textContent = '❌ Ошибка соединения';
+                message.className = 'form-message error';
+            }
+        });
+    </script>
+</body>
+</html>

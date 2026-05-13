@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>О школе | Академия КИНО</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/about.css">
+</head>
+<body>
+    <!-- ШАПКА -->
+    <header class="header" id="header">
+        <div class="header-container">
+            <a href="/" class="logo">🎬 Академия КИНО</a>
+            <nav class="nav">
+                <a href="/#courses" class="nav-link">Курсы</a>
+                <a href="/about.html" class="nav-link">О школе</a>
+                <a href="/#faq" class="nav-link">FAQ</a>
+                <a href="/#contacts" class="nav-link">Контакты</a>
+            </nav>
+            <button class="btn btn-outline" id="openAuthBtn">Войти</button>
+        </div>
+    </header>
+
+    <!-- БАННЕР -->
+    <section class="about-hero">
+        <div class="about-hero-content">
+            <h1>О Академии КИНО</h1>
+            <p>Мы создаём пространство, где рождаются новые голоса в кинематографе</p>
+        </div>
+    </section>
+
+    <!-- МИССИЯ -->
+    <section class="about-section" id="mission">
+        <div class="about-container">
+            <div class="about-text">
+                <h2>Наша миссия</h2>
+                <p>
+                    Мы верим, что <strong>великое кино начинается не с дорогой камеры, а с идеи</strong>. 
+                    Академия КИНО создана, чтобы каждый мог освоить искусство кинопроизводства — 
+                    независимо от опыта, бюджета и места жительства.
+                </p>
+                <p>
+                    Наши мастера — действующие режиссёры, сценаристы и монтажёры, чьи фильмы 
+                    участвуют в международных фестивалях. Они не просто учат теории — 
+                    они делятся реальным опытом индустрии.
+                </p>
+            </div>
+            <div class="about-image">
+                <img src="https://images.unsplash.com/photo-1478720568477-152d9b164e26?w=500&auto=format&fit=crop" alt="Киносъемка">
+            </div>
+        </div>
+    </section>
+
+    <!-- ЦИФРЫ -->
+    <section class="stats-section">
+        <div class="about-container">
+            <h2 class="stats-title">Академия в цифрах</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="stat-number">500+</span>
+                    <span class="stat-label">Выпускников</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">3</span>
+                    <span class="stat-label">Факультета</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">50+</span>
+                    <span class="stat-label">Часов лекций</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-number">94%</span>
+                    <span class="stat-label">Довольных студентов</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- КОМАНДА -->
+    <section class="about-section" id="team">
+        <div class="about-container">
+            <h2 class="section-center-title">Наши мастера</h2>
+            <div class="team-grid">
+                <div class="team-card">
+                    <div class="team-photo">🎬</div>
+                    <h3>Квентин Тарантино</h3>
+                    <p class="team-role">Мастер сценария</p>
+                    <p class="team-bio">Сценарист и режиссёр. Научит писать диалоги, от которых захватывает дух.</p>
+                </div>
+                <div class="team-card">
+                    <div class="team-photo">📽️</div>
+                    <h3>Кристофер Нолан</h3>
+                    <p class="team-role">Мастер режиссуры</p>
+                    <p class="team-bio">Режиссёр блокбастеров. Раскроет секреты визуального повествования.</p>
+                </div>
+                <div class="team-card">
+                    <div class="team-photo">✂️</div>
+                    <h3>Тельма Скунмейкер</h3>
+                    <p class="team-role">Мастер монтажа</p>
+                    <p class="team-bio">Легендарный монтажёр. Покажет, как ритм склейки меняет восприятие фильма.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- КОНТАКТЫ -->
+    <section class="about-section contacts-section" id="contacts">
+        <div class="about-container">
+            <h2 class="section-center-title">Свяжитесь с нами</h2>
+            <div class="contacts-grid">
+                <div class="contact-item">
+                    <span class="contact-icon">📧</span>
+                    <h3>Email</h3>
+                    <p>hello@cinema-academy.ru</p>
+                </div>
+                <div class="contact-item">
+                    <span class="contact-icon">📞</span>
+                    <h3>Телефон</h3>
+                    <p>+7 (999) 123-45-67</p>
+                </div>
+                <div class="contact-item">
+                    <span class="contact-icon">💬</span>
+                    <h3>Telegram</h3>
+                    <p>@cinema_academy</p>
+                </div>
+                <div class="contact-item">
+                    <span class="contact-icon">📍</span>
+                    <h3>Адрес</h3>
+                    <p>Москва, ул. Киношная, 7</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ПОДВАЛ -->
+    <footer class="footer">
+        <p>&copy; 2024 Академия КИНО. Все права защищены.</p>
+    </footer>
+
+    <!-- МОДАЛКА ВХОДА -->
+    <div class="modal-overlay" id="authModal">
+        <div class="modal">
+            <button class="modal-close" id="closeModal">&times;</button>
+            <div class="modal-tabs">
+                <button class="modal-tab active" data-tab="login">Вход</button>
+                <button class="modal-tab" data-tab="register">Регистрация</button>
+            </div>
+            <form class="auth-form active" id="loginForm">
+                <h3 class="form-title">С возвращением!</h3>
+                <input type="email" placeholder="Email" required class="form-input">
+                <input type="password" placeholder="Пароль" required class="form-input">
+                <button type="submit" class="btn btn-primary form-btn">Войти</button>
+                <p class="form-message" id="loginMessage"></p>
+            </form>
+            <form class="auth-form" id="registerForm">
+                <h3 class="form-title">Начните обучение!</h3>
+                <input type="text" placeholder="Имя" required class="form-input">
+                <input type="email" placeholder="Email" required class="form-input">
+                <input type="password" placeholder="Пароль (мин. 6 символов)" required class="form-input">
+                <button type="submit" class="btn btn-primary form-btn">Зарегистрироваться</button>
+                <p class="form-message" id="registerMessage"></p>
+            </form>
+        </div>
+    </div>
+
+    <script src="/js/auth.js"></script>
+</body>
+</html>

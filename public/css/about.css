@@ -1,0 +1,228 @@
+/* ============================================
+   СТРАНИЦА "О ШКОЛЕ"
+   ============================================ */
+
+/* Баннер */
+.about-hero {
+    background: linear-gradient(rgba(255, 245, 235, 0.7), rgba(245, 235, 220, 0.8)),
+                url('https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?w=1200&auto=format&fit=crop') center/cover no-repeat;
+    height: 50vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin-top: 70px;
+}
+
+.about-hero-content h1 {
+    font-size: 3rem;
+    color: #8b7355;
+    margin-bottom: 15px;
+}
+
+.about-hero-content p {
+    font-size: 1.2rem;
+    color: #6b5c4f;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Общие секции */
+.about-section {
+    padding: 80px 20px;
+}
+
+.about-container {
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+/* Миссия — текст + картинка */
+.about-container {
+    display: flex;
+    gap: 50px;
+    align-items: center;
+}
+
+.about-text {
+    flex: 1;
+}
+
+.about-text h2 {
+    font-size: 2rem;
+    color: #8b7355;
+    margin-bottom: 20px;
+}
+
+.about-text p {
+    color: #6b5c4f;
+    font-size: 1.05rem;
+    line-height: 1.7;
+    margin-bottom: 15px;
+}
+
+.about-text strong {
+    color: #8b7355;
+}
+
+.about-image {
+    flex: 1;
+}
+
+.about-image img {
+    width: 100%;
+    border-radius: 16px;
+    box-shadow: 0 8px 30px rgba(180, 150, 120, 0.2);
+}
+
+/* Цифры */
+.stats-section {
+    background: #fffaf5;
+    padding: 70px 20px;
+    border-top: 1px solid #e8d5c4;
+    border-bottom: 1px solid #e8d5c4;
+}
+
+.stats-title {
+    text-align: center;
+    font-size: 2rem;
+    color: #8b7355;
+    margin-bottom: 40px;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;
+}
+
+.stat-card {
+    text-align: center;
+    padding: 30px 20px;
+    background: #fff;
+    border-radius: 16px;
+    border: 1px solid #e8d5c4;
+}
+
+.stat-number {
+    display: block;
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #d4a574;
+    margin-bottom: 8px;
+}
+
+.stat-label {
+    color: #8b7355;
+    font-size: 1rem;
+}
+
+/* Команда */
+.section-center-title {
+    text-align: center;
+    font-size: 2rem;
+    color: #8b7355;
+    margin-bottom: 40px;
+}
+
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+}
+
+.team-card {
+    text-align: center;
+    padding: 40px 25px;
+    background: #fffaf5;
+    border-radius: 16px;
+    border: 1px solid #e8d5c4;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.team-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(180, 150, 120, 0.2);
+}
+
+.team-photo {
+    font-size: 3rem;
+    margin-bottom: 15px;
+}
+
+.team-card h3 {
+    color: #5c4a3a;
+    margin-bottom: 5px;
+}
+
+.team-role {
+    color: #d4a574;
+    font-weight: bold;
+    font-size: 0.9rem;
+    margin-bottom: 12px;
+}
+
+.team-bio {
+    color: #6b5c4f;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+/* Контакты */
+.contacts-section {
+    background: #fffaf5;
+}
+
+.contacts-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 25px;
+}
+
+.contact-item {
+    text-align: center;
+    padding: 30px 15px;
+    background: #fff;
+    border-radius: 16px;
+    border: 1px solid #e8d5c4;
+}
+
+.contact-icon {
+    font-size: 2rem;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.contact-item h3 {
+    color: #8b7355;
+    font-size: 1rem;
+    margin-bottom: 8px;
+}
+
+.contact-item p {
+    color: #6b5c4f;
+    font-size: 0.95rem;
+}
+
+/* Адаптив */
+@media (max-width: 768px) {
+    .about-container {
+        flex-direction: column;
+    }
+    
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .team-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .contacts-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .about-hero-content h1 {
+        font-size: 2rem;
+    }
+}

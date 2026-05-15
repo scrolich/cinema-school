@@ -216,18 +216,30 @@ app.post('/api/enroll/:courseId', userAuth, (req, res) => {
         return res.status(400).json({ message: 'Вы уже записаны на этот курс' });
     }
     
-    // Добавляем запись
+    const course = courses.find(c => c.id === courseId);
+    if (!course) {
+        return res.status(404).json({ message: 'Курс не найден' });
+    }
+    
+    // Если курс платный — добавляем с пометкой "не оплачен"
     user.enrolledCourses.push({
         courseId: courseId,
         enrolledAt: new Date().toISOString(),
         progress: 0,
-        completedLessons: []
+        completedLessons: [],
+        paid: course.price === 0  // true если бесплатный
     });
     
     writeJSON('users.json', users);
     
-    console.log(`📚 ${user.name} записался на курс #${courseId}`);
-    res.json({ message: 'Вы записаны на курс!', enrolledCourses: user.enrolledCourses });
+    console.log(`📚 ${user.name} записался на курс #${courseId} (оплачен: ${course.price === 0})`);
+    
+    res.json({ 
+        message: course.price === 0 
+            ? '✅ Курс добавлен в личный кабинет!' 
+            : '✅ Вы записаны! Курс появится в кабинете после оплаты.',
+        paid: course.price === 0
+    });
 });
 
 // Получить мои курсы

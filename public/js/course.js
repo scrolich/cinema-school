@@ -102,7 +102,7 @@ async function enrollCourse(courseId) {
         const data = await response.json();
         
         if (response.ok) {
-            alert('🎉 Вы записаны на курс! Перейдите в личный кабинет.');
+            alert(data.message);
         } else {
             alert(data.message || 'Ошибка записи');
         }

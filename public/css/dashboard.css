@@ -148,3 +148,11 @@
         justify-content: center;
     }
 }
+.course-locked {
+    opacity: 0.7;
+    border-color: #f0d0d0;
+}
+
+.course-locked:hover {
+    opacity: 0.85;
+}

@@ -49,6 +49,9 @@ async function loadMyCourses() {
         
         const myCourses = await response.json();
         
+        // Показываем только оплаченные (или бесплатные)
+        const activeCourses = myCourses.filter(c => c.paid !== false);
+
         if (myCourses.length === 0) {
             container.innerHTML = `
                 <div class="empty-state">
@@ -60,6 +63,45 @@ async function loadMyCourses() {
             `;
             return;
         }
+
+        let html = '<div class="my-courses-grid">';
+
+        myCourses.forEach(course => {
+            const isLocked = course.paid === false;
+            
+            html += `
+                <div class="my-course-card ${isLocked ? 'course-locked' : ''}">
+                    <img src="${course.poster}" alt="${course.title}" class="my-course-poster"
+                        onerror="this.src='https://placehold.co/120x80/e8d5c4/d4a574?text=🎬'">
+                    <div class="my-course-info">
+                        <h3 class="my-course-title">
+                            ${course.title}
+                            ${isLocked ? '🔒' : ''}
+                        </h3>
+                        <p class="my-course-master">${course.master}</p>
+                        ${isLocked ? `
+                            <p style="color: #e74c3c; font-size: 0.9rem;">⏳ Ожидает оплаты</p>
+                        ` : `
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: ${course.progress || 0}%"></div>
+                            </div>
+                            <p class="progress-text">${course.progress || 0}% пройдено</p>
+                        `}
+                    </div>
+                    <div class="my-course-actions">
+                        ${isLocked ? `
+                            <button class="btn btn-primary btn-continue" disabled style="opacity: 0.5;">
+                                💳 Оплатить
+                            </button>
+                        ` : `
+                            <a href="/course.html?id=${course.id}" class="btn btn-primary btn-continue">
+                                ${course.progress > 0 ? '▶ Продолжить' : '🎬 Начать'}
+                            </a>
+                        `}
+                    </div>
+                </div>
+            `;
+        });
         
         let html = '<div class="my-courses-grid">';
         

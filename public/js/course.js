@@ -82,17 +82,33 @@ function renderCourse(course) {
     `;
 }
 
-function enrollCourse(courseId) {
+async function enrollCourse(courseId) {
     const token = localStorage.getItem('token');
     
     if (!token) {
-        // Если не вошёл — открываем модалку входа
         openModal();
         return;
     }
     
-    alert('🎉 Вы записаны на курс! (функционал в разработке)');
-    // Тут будет логика записи на курс
+    try {
+        const response = await fetch(`/api/enroll/${courseId}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        });
+        
+        const data = await response.json();
+        
+        if (response.ok) {
+            alert('🎉 Вы записаны на курс! Перейдите в личный кабинет.');
+        } else {
+            alert(data.message || 'Ошибка записи');
+        }
+    } catch (error) {
+        alert('Ошибка соединения');
+    }
 }
 
 // Запуск

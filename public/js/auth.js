@@ -18,6 +18,7 @@ function checkAuth() {
         authBtn.classList.remove('logged-in');
         authBtn.addEventListener('click', openModal);
     }
+
 }
 
 function openModal() {
@@ -32,7 +33,7 @@ function createUserMenu() {
     menu.id = 'userDropdown';
     menu.className = 'user-dropdown';
     menu.innerHTML = `
-        <a href="#" class="dropdown-item">📚 Мои курсы</a>
+        <a href="/dashboard.html" class="dropdown-item">📚 Мои курсы</a>
         <a href="#" class="dropdown-item">⚙️ Настройки</a>
         <hr>
         <a href="#" class="dropdown-item logout">🚪 Выйти</a>

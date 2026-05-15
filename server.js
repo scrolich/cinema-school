@@ -177,6 +177,111 @@ app.post('/api/admin/login', async (req, res) => {
     }
 });
 
+// ============================================
+// API: ЛИЧНЫЙ КАБИНЕТ СТУДЕНТА
+// ============================================
+
+// Middleware проверки обычного пользователя
+function userAuth(req, res, next) {
+    const token = req.headers.authorization?.split(' ')[1];
+    
+    if (!token) {
+        return res.status(401).json({ message: 'Требуется авторизация' });
+    }
+    
+    try {
+        const decoded = jwt.verify(token, JWT_SECRET);
+        req.userId = decoded.userId;
+        next();
+    } catch (error) {
+        return res.status(401).json({ message: 'Неверный токен' });
+    }
+}
+
+// Записаться на курс
+app.post('/api/enroll/:courseId', userAuth, (req, res) => {
+    const courseId = parseInt(req.params.courseId);
+    const user = users.find(u => u.id === req.userId);
+    
+    if (!user) {
+        return res.status(404).json({ message: 'Пользователь не найден' });
+    }
+    
+    if (!user.enrolledCourses) {
+        user.enrolledCourses = [];
+    }
+    
+    // Проверка: уже записан?
+    if (user.enrolledCourses.find(e => e.courseId === courseId)) {
+        return res.status(400).json({ message: 'Вы уже записаны на этот курс' });
+    }
+    
+    // Добавляем запись
+    user.enrolledCourses.push({
+        courseId: courseId,
+        enrolledAt: new Date().toISOString(),
+        progress: 0,
+        completedLessons: []
+    });
+    
+    writeJSON('users.json', users);
+    
+    console.log(`📚 ${user.name} записался на курс #${courseId}`);
+    res.json({ message: 'Вы записаны на курс!', enrolledCourses: user.enrolledCourses });
+});
+
+// Получить мои курсы
+app.get('/api/my-courses', userAuth, (req, res) => {
+    const user = users.find(u => u.id === req.userId);
+    
+    if (!user || !user.enrolledCourses) {
+        return res.json([]);
+    }
+    
+    const myCourses = user.enrolledCourses.map(enrollment => {
+        const course = courses.find(c => c.id === enrollment.courseId);
+        if (!course) return null;
+        
+        return {
+            ...course,
+            progress: enrollment.progress,
+            enrolledAt: enrollment.enrolledAt,
+            completedLessons: enrollment.completedLessons || []
+        };
+    }).filter(Boolean);
+    
+    res.json(myCourses);
+});
+
+// Обновить прогресс курса
+app.put('/api/progress/:courseId', userAuth, (req, res) => {
+    const courseId = parseInt(req.params.courseId);
+    const { lessonTitle } = req.body;
+    const user = users.find(u => u.id === req.userId);
+    
+    if (!user) return res.status(404).json({ message: 'Пользователь не найден' });
+    
+    const enrollment = user.enrolledCourses.find(e => e.courseId === courseId);
+    if (!enrollment) return res.status(404).json({ message: 'Вы не записаны на этот курс' });
+    
+    // Добавляем урок в завершённые
+    if (!enrollment.completedLessons.includes(lessonTitle)) {
+        enrollment.completedLessons.push(lessonTitle);
+    }
+    
+    // Считаем прогресс
+    const course = courses.find(c => c.id === courseId);
+    if (course && course.modules) {
+        const totalLessons = course.modules.reduce((sum, mod) => sum + mod.lessons.length, 0);
+        enrollment.progress = Math.round((enrollment.completedLessons.length / totalLessons) * 100);
+    }
+    
+    writeJSON('users.json', users);
+    
+    console.log(`📊 ${user.name}: курс #${courseId} — прогресс ${enrollment.progress}%`);
+    res.json({ progress: enrollment.progress, completedLessons: enrollment.completedLessons });
+});
+
 // Получить все курсы (с полными данными)
 app.get('/api/admin/courses', adminAuth, (req, res) => {
     res.json(courses);
@@ -258,3 +363,4 @@ app.listen(PORT, () => {
     console.log(`  👥 Студентов: ${users.length}`);
     console.log('═══════════════════════════════════');
 });
+

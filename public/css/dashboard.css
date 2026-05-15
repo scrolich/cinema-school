@@ -1,0 +1,150 @@
+/* ============================================
+   ЛИЧНЫЙ КАБИНЕТ
+   ============================================ */
+
+.dashboard {
+    min-height: 80vh;
+    margin-top: 70px;
+    padding: 50px 20px;
+    background: #faf5f0;
+}
+
+.dashboard-container {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.dashboard-title {
+    font-size: 2rem;
+    color: #8b7355;
+    margin-bottom: 5px;
+}
+
+.dashboard-subtitle {
+    color: #b8a088;
+    margin-bottom: 40px;
+    font-size: 1.1rem;
+}
+
+/* Пустое состояние */
+.empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    background: #fffaf5;
+    border-radius: 16px;
+    border: 1px solid #e8d5c4;
+}
+
+.empty-state-icon {
+    font-size: 3rem;
+    display: block;
+    margin-bottom: 15px;
+}
+
+.empty-state h3 {
+    color: #8b7355;
+    margin-bottom: 10px;
+}
+
+.empty-state p {
+    color: #b8a088;
+    margin-bottom: 20px;
+}
+
+/* Карточки курсов */
+.my-courses-grid {
+    display: grid;
+    gap: 20px;
+}
+
+.my-course-card {
+    background: #fffaf5;
+    border-radius: 16px;
+    border: 1px solid #e8d5c4;
+    padding: 24px;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.my-course-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(180, 150, 120, 0.15);
+}
+
+.my-course-poster {
+    width: 120px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 10px;
+    flex-shrink: 0;
+}
+
+.my-course-info {
+    flex: 1;
+}
+
+.my-course-title {
+    color: #5c4a3a;
+    font-size: 1.2rem;
+    margin-bottom: 5px;
+}
+
+.my-course-master {
+    color: #b8a088;
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+}
+
+/* Прогресс-бар */
+.progress-bar {
+    background: #f0e0d0;
+    border-radius: 10px;
+    height: 8px;
+    overflow: hidden;
+    margin-bottom: 8px;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #d4a574, #c0956b);
+    border-radius: 10px;
+    transition: width 0.5s ease;
+}
+
+.progress-text {
+    font-size: 0.8rem;
+    color: #8b7355;
+    font-weight: bold;
+}
+
+.my-course-actions {
+    display: flex;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+/* Кнопка "Продолжить" */
+.btn-continue {
+    padding: 10px 20px;
+    font-size: 0.9rem;
+    white-space: nowrap;
+}
+
+/* Адаптив */
+@media (max-width: 768px) {
+    .my-course-card {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .my-course-poster {
+        width: 100%;
+        height: 160px;
+    }
+    
+    .my-course-actions {
+        justify-content: center;
+    }
+}
